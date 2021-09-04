@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.hcl.demo.bo.CommonResponseDetails;
 import com.hcl.demo.exceptions.LoginException;
+import com.hcl.demo.exceptions.ValidationException;
 
 @ControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
@@ -23,6 +24,16 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
     	CommonResponseDetails res= new CommonResponseDetails();
     	res.setDescription("UNAUTHORIZED");
+    	res.setMessage(ex.getMessage());
+        return new ResponseEntity<CommonResponseDetails>(res, HttpStatus.UNAUTHORIZED);
+    }
+	
+	@ExceptionHandler(ValidationException.class)
+    public ResponseEntity<CommonResponseDetails> handleValidationException(
+    		ValidationException ex, WebRequest request) {
+
+    	CommonResponseDetails res= new CommonResponseDetails();
+    	res.setDescription("INCORRECT_DATA");
     	res.setMessage(ex.getMessage());
         return new ResponseEntity<CommonResponseDetails>(res, HttpStatus.UNAUTHORIZED);
     }
